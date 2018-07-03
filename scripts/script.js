@@ -91,21 +91,23 @@ function createGrid() {
 }
 function drawMaze() {
 	for (var i = 1; i < grid.length+1; ++i){
-		for (var j = 1; j < grid[i-1].length+1; ++j){
+		for (var j = 1; j < grid[i - 1].length + 1; ++j) {
 			if (grid[i-1][j-1] === 0) continue;
 			ctx.beginPath();
+			let x, y;
 			if (grid[i-1][j-1] === 1) {
-				let y = i * (radius * 2 + padding);
-				let x = j * (radius * 2 + padding);
+				y = i * (radius * 2 + padding);
+				x = j * (radius * 2 + padding);
 				ctx.moveTo(x, y);
 				ctx.lineTo(x + (radius * 2 + padding), y);
 			}
 			if (grid[i-1][j-1] === 2) {
-				let y = i * (radius * 2 + padding);
-				let x = j * (radius * 2 + padding);
+				y = i * (radius * 2 + padding);
+				x = j * (radius * 2 + padding);
 				ctx.moveTo(x, y);
 				ctx.lineTo(x, y + (radius * 2 + padding));
 			}
+			ctx.fillText(x,y,grid[i-1][j-1]);
 			ctx.closePath();
 			ctx.strokeStyle = "#fff";
 			ctx.stroke();
@@ -133,8 +135,12 @@ function draw() {
 		pacman.y >= can.height - radius ||
 		pacman.y <= radius)
 	) {
-		pacman.x += speed.x;
-		pacman.y += speed.y;
+		let x = ~~((pacman.x + speed.x) / ((radius * 2 + padding)*2));
+		let y = ~~((pacman.y + speed.y) / ((radius * 2 + padding)*2));
+		if (!!grid[x][y]) {
+			pacman.x += speed.x;
+			pacman.y += speed.y;
+		}
 	} else {
 		speed = {
 			x: 0,
