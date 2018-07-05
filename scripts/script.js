@@ -76,6 +76,7 @@ var mouth = {
 	min: Math.PI * 0.05
 };
 var grid = []
+var colors = [];
 var padding = 15;
 function createGrid() {
 	var width = ~~(can.width / (radius*2 + padding));
@@ -84,12 +85,14 @@ function createGrid() {
 		let temp = [];
 		for (var j = 0; j < width; ++j) {
 			temp.push(~~(Math.random() * 3));
+			colors.push("rgb(" + (~~(Math.random() * 256)) + "," + (~~(Math.random() * 256)) + "," + (~~(Math.random() * 256)) + ")")
 		}
 		grid.push(temp);
 	}
 	console.log(width == grid.length);
 }
 function drawMaze() {
+	z = 0;
 	for (var i = 1; i < grid.length+1; ++i){
 		for (var j = 1; j < grid[i - 1].length + 1; ++j) {
 			if (grid[i-1][j-1] === 0) continue;
@@ -107,9 +110,9 @@ function drawMaze() {
 				ctx.moveTo(x, y);
 				ctx.lineTo(x, y + (radius * 2 + padding));
 			}
-			ctx.fillText(x,y,grid[i-1][j-1]);
 			ctx.closePath();
 			ctx.strokeStyle = "#fff";
+			ctx.lineWidth = "5";
 			ctx.stroke();
 		}
 	}
@@ -117,6 +120,7 @@ function drawMaze() {
 function draw() {
 	clear();
 	drawMaze();
+	// ctx.lineWidth = "1"
 	ctx.beginPath();
 	ctx.strokeStyle = "yellow";
 	if (mouth.wide > mouth.max || mouth.wide < mouth.min) mouth.direction *= -1;
